@@ -1,13 +1,14 @@
 {
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "type": "java",
-      "name": "Spring Boot - AiBackendApplication",
-      "request": "launch",
-      "mainClass": "com.zykj.ai_backend.AiBackendApplication",
-      "projectName": "ai-backend",
-      "console": "integratedTerminal"
-    }
-  ]
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-AiBackendApplication<ai-backend>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.zykj.ai_backend.AiBackendApplication",
+            "projectName": "ai-backend",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
 }

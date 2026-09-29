@@ -1,6 +1,7 @@
 package com.zykj.ai_backend;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,6 +19,11 @@ public class HelloController {
 
     @GetMapping("/api/hello")
     public String apiHello() {
+        return "Hello World!";
+    }
+
+    @PostMapping("/api/hello")
+    public String apiHelloPost() {
         return "Hello World!";
     }
 }

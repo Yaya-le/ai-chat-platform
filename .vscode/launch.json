@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "AiBackendApplication",
+            "request": "launch",
+            "mainClass": "com.zykj.ai_backend.AiBackendApplication",
+            "projectName": ""
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-AiBackendApplication<ai-backend>",
             "request": "launch",
             "cwd": "${workspaceFolder}",

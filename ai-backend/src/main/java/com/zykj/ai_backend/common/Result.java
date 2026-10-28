@@ -1,33 +1,30 @@
 package com.zykj.ai_backend.common;
 
-import lombok.Data;
+import lombok.Getter;
 
-/**
- * 统一返回结果类
- */
-@Data
+@Getter
 public class Result<T> {
-    /** 状态码：200-成功，500-失败 */
-    private Integer code;
-    /** 提示信息 */
-    private String msg;
-    /** 返回数据 */
+
+    private int code;
+    private String message;
     private T data;
 
-    /** 成功 */
-    public static <T> Result<T> success(T data) {
-        Result<T> r = new Result<>();
-        r.code = 200;
-        r.msg = "成功";
-        r.data = data;
-        return r;
+    public Result(int code, String message, T data) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
     }
 
-    /** 失败 */
-    public static <T> Result<T> error(String msg) {
-        Result<T> r = new Result<>();
-        r.code = 500;
-        r.msg = msg;
-        return r;
+    public Result(int code, String message) {
+        this.code = code;
+        this.message = message;
+    }
+
+    public static <T> Result<T> ok(int code, String message, T data) {
+        return new Result<T>(code, message, data);
+    }
+
+    public static <T> Result<T> fail(int code, String message) {
+        return new Result<>(code, message);
     }
 }

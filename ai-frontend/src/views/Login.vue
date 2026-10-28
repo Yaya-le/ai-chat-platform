@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
@@ -31,18 +31,14 @@ const handleLogin = async () => {
         username: form.username,
         password: form.password
       })
-      // if (!data.token) {
-      //   console.error('[login] 未取到 token，后端返回：', data)
-      //   throw new Error('登录成功，但接口未返回 token')
-      // }
-
-      //setToken(token) // 写入 localStorage['ADMIN_TOKEN']
-      if (data === "success"){
+      // data 就是后端返回的 token 字符串
+      if (data) {
+        setToken(data)
         ElMessage.success('登录成功')
         router.push('/chat')
-      }        
-      else
+      } else {
         ElMessage.error('登录失败')
+      }
       // 回跳来源页，无来源则进首页
       //const redirect = router.currentRoute.value.query.redirect
       
@@ -75,7 +71,7 @@ const handleLogin = async () => {
               <MagicStick />
             </el-icon>
           </div>
-          <span class="logo-name">Nexus AI</span>
+          <span class="logo-name">Echo AI</span>
         </div>
 
         <h1 class="hero-title">
@@ -177,23 +173,24 @@ const handleLogin = async () => {
 </template>
 
 <style scoped>
-/* ===== 全局 ===== */
+/* ===== 全局：与 Chat.vue 一致的浅蓝渐变背景 ===== */
 .ai-login {
   min-height: 100vh;
   position: relative;
   display: flex;
   overflow: hidden;
-  background: #0a0e1a;
+  background: linear-gradient(135deg, #a8c8e8 0%, #b8c8e8 40%, #8ec8e0 100%);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #1e293b;
 }
 
-/* ===== 背景网格 + 光效 ===== */
+/* ===== 背景网格 + 光效（与 Chat.vue 同款） ===== */
 .bg-grid {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255, 255, 255, .03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, .03) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, .06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, .06) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, #000 40%, transparent 100%);
 }
@@ -201,35 +198,13 @@ const handleLogin = async () => {
 .glow {
   position: absolute;
   border-radius: 50%;
-  filter: blur(120px);
-  opacity: .45;
+  filter: blur(100px);
   pointer-events: none;
 }
 
-.glow-a {
-  width: 520px;
-  height: 520px;
-  background: #6366f1;
-  top: -160px;
-  left: -120px;
-}
-
-.glow-b {
-  width: 420px;
-  height: 420px;
-  background: #06b6d4;
-  bottom: -100px;
-  left: 30%;
-}
-
-.glow-c {
-  width: 360px;
-  height: 360px;
-  background: #8b5cf6;
-  top: 20%;
-  right: -80px;
-  opacity: .25;
-}
+.glow-a { width: 560px; height: 560px; background: #6366f1; top: -200px; right: -100px; opacity: .35; }
+.glow-b { width: 460px; height: 460px; background: #06b6d4; bottom: -160px; left: 25%; opacity: .25; }
+.glow-c { width: 420px; height: 420px; background: #8b5cf6; top: 30%; left: -120px; opacity: .3; }
 
 /* ===== 左侧 Hero ===== */
 .hero {
@@ -241,326 +216,160 @@ const handleLogin = async () => {
   z-index: 1;
 }
 
-.hero-inner {
-  max-width: 520px;
-}
+.hero-inner { max-width: 520px; }
 
-.hero-logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 56px;
-}
+.hero-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 56px; }
 
 .logo-mark {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
+  width: 42px; height: 42px; border-radius: 12px;
   background: linear-gradient(135deg, #6366f1, #06b6d4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 20px rgba(99, 102, 241, .45);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px rgba(99,102,241,.3);
+  color: #fff;
 }
 
-.logo-name {
-  font-size: 20px;
-  font-weight: 700;
-  color: #f1f5f9;
-  letter-spacing: .3px;
-}
+.logo-name { font-size: 20px; font-weight: 700; color: #1e293b; letter-spacing: .3px; }
 
 .hero-title {
-  font-size: 44px;
-  font-weight: 700;
-  line-height: 1.15;
-  margin: 0 0 20px;
-  background: linear-gradient(135deg, #f1f5f9 30%, #818cf8 70%, #22d3ee);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 44px; font-weight: 700; line-height: 1.15;
+  margin: 0 0 20px; color: #1e293b;
 }
 
-.hero-sub {
-  font-size: 15px;
-  line-height: 1.7;
-  color: #94a3b8;
-  margin: 0 0 48px;
-}
+.hero-sub { font-size: 15px; line-height: 1.7; color: #475569; margin: 0 0 48px; }
 
-/* 对话预览 */
-.chat-preview {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
+/* 对话预览气泡（与 Chat.vue 消息气泡同款） */
+.chat-preview { display: flex; flex-direction: column; gap: 14px; }
 
 .bubble {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  max-width: 88%;
-  padding: 12px 16px;
-  border-radius: 14px;
-  font-size: 13.5px;
-  line-height: 1.55;
+  display: flex; align-items: flex-start; gap: 10px; max-width: 88%;
+  padding: 12px 16px; border-radius: 14px; font-size: 13.5px; line-height: 1.55;
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
   animation: slideUp .6s ease both;
 }
 
-.bubble .el-icon {
-  flex-shrink: 0;
-  margin-top: 1px;
-}
+.bubble .el-icon { flex-shrink: 0; margin-top: 1px; }
 
 .bubble-user {
   align-self: flex-end;
-  background: rgba(99, 102, 241, .18);
-  border: 1px solid rgba(99, 102, 241, .3);
-  color: #e0e7ff;
+  background: rgba(99,102,241,.2);
+  border: 1px solid rgba(99,102,241,.25);
+  color: #312e81;
   border-bottom-right-radius: 4px;
 }
-
-.bubble-user .el-icon {
-  color: #a5b4fc;
-}
+.bubble-user .el-icon { color: #4f46e5; }
 
 .bubble-ai {
   align-self: flex-start;
-  background: rgba(255, 255, 255, .05);
-  border: 1px solid rgba(255, 255, 255, .1);
-  color: #cbd5e1;
+  background: rgba(255,255,255,.6);
+  border: 1px solid rgba(255,255,255,.7);
+  color: #334155;
   border-bottom-left-radius: 4px;
-  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(0,0,0,.08);
 }
+.bubble-ai .el-icon { color: #6366f1; }
 
-.bubble-ai .el-icon {
-  color: #22d3ee;
-}
-
-.bubble:nth-child(2) {
-  animation-delay: .1s;
-}
-
-.bubble:nth-child(3) {
-  animation-delay: .22s;
-}
+.bubble:nth-child(2) { animation-delay: .1s; }
+.bubble:nth-child(3) { animation-delay: .22s; }
 
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* ===== 右侧登录 ===== */
+/* ===== 右侧登录卡片：白色毛玻璃 ===== */
 .login-side {
   flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   padding: 40px 48px;
-  position: relative;
-  z-index: 1;
+  position: relative; z-index: 1;
 }
 
 .glass-card {
-  width: 100%;
-  max-width: 400px;
-  background: rgba(255, 255, 255, .04);
-  border: 1px solid rgba(255, 255, 255, .1);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  width: 100%; max-width: 400px;
+  background: rgba(255,255,255,.55);
+  border: 1px solid rgba(255,255,255,.6);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
   border-radius: 20px;
   padding: 44px 36px 32px;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, .4), inset 0 1px 0 rgba(255, 255, 255, .08);
+  box-shadow: 0 8px 32px rgba(0,0,0,.08);
 }
 
-.card-head {
-  margin-bottom: 32px;
-  text-align: center;
-}
+.card-head { margin-bottom: 32px; text-align: center; }
+.card-head h2 { margin: 0 0 6px; font-size: 22px; font-weight: 600; color: #1e293b; }
+.card-head p { margin: 0; font-size: 13px; color: #64748b; }
 
-.card-head h2 {
-  margin: 0 0 6px;
-  font-size: 22px;
-  font-weight: 600;
-  color: #f1f5f9;
-}
-
-.card-head p {
-  margin: 0;
-  font-size: 13px;
-  color: #64748b;
-}
-
-/* 输入框暗色覆写 */
+/* 输入框浅色覆写 */
 :deep(.el-input__wrapper) {
-  background: rgba(255, 255, 255, .05);
-  border: 1px solid rgba(255, 255, 255, .12);
+  background: rgba(255,255,255,.6);
+  border: 1px solid rgba(255,255,255,.7);
   border-radius: 12px;
-  box-shadow: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,.04);
   padding: 6px 14px;
   transition: all .2s;
 }
-
-:deep(.el-input__wrapper:hover) {
-  border-color: rgba(129, 140, 248, .5);
-}
-
+:deep(.el-input__wrapper:hover) { border-color: rgba(99,102,241,.4); }
 :deep(.el-input__wrapper.is-focus) {
   border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, .18);
-  background: rgba(255, 255, 255, .07);
+  box-shadow: 0 0 0 3px rgba(99,102,241,.15);
+  background: rgba(255,255,255,.8);
 }
+:deep(.el-input__inner) { color: #1e293b; }
+:deep(.el-input__inner::placeholder) { color: #94a3b8; }
+:deep(.el-input__prefix-inner .el-icon) { color: #64748b; }
 
-:deep(.el-input__inner) {
-  color: #e2e8f0;
-}
-
-:deep(.el-input__inner::placeholder) {
-  color: #475569;
-}
-
-:deep(.el-input__prefix-inner .el-icon) {
-  color: #64748b;
-}
-
-/* checkbox 暗色 */
-:deep(.el-checkbox__label) {
-  color: #94a3b8;
-  font-size: 13px;
-}
-
-:deep(.el-checkbox__inner) {
-  background: rgba(255, 255, 255, .08);
-  border-color: rgba(255, 255, 255, .2);
-}
+:deep(.el-checkbox__label) { color: #64748b; font-size: 13px; }
+:deep(.el-checkbox__inner) { background: #fff; border-color: #cbd5e1; }
 
 .row-between {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: flex; justify-content: space-between; align-items: center;
   margin: -2px 0 24px;
 }
-
-.link {
-  font-size: 13px;
-  color: #818cf8;
-  text-decoration: none;
-}
-
-.link:hover {
-  text-decoration: underline;
-  color: #a5b4fc;
-}
+.link { font-size: 13px; color: #6366f1; text-decoration: none; }
+.link:hover { text-decoration: underline; color: #4f46e5; }
 
 .login-btn {
-  width: 100%;
-  height: 46px;
-  border-radius: 12px;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: 1px;
+  width: 100%; height: 46px;
+  border-radius: 12px; font-size: 15px; font-weight: 600; letter-spacing: 1px;
   background: linear-gradient(135deg, #6366f1, #06b6d4);
   border: none;
+  box-shadow: 0 4px 16px rgba(99,102,241,.3);
   transition: all .25s;
 }
+.login-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(99,102,241,.45); }
 
-.login-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 28px rgba(99, 102, 241, .45);
-}
-
-/* 分割线 */
 .divider {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 24px 0 18px;
-  color: #475569;
-  font-size: 12px;
+  display: flex; align-items: center; gap: 12px;
+  margin: 24px 0 18px; color: #94a3b8; font-size: 12px;
 }
-
-.divider::before,
-.divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: rgba(255, 255, 255, .08);
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: rgba(148,163,184,.25);
 }
+.divider span { padding: 0 4px; }
 
-.divider span {
-  padding: 0 4px;
-}
-
-/* OAuth */
-.oauth-row {
-  display: flex;
-  gap: 12px;
-}
-
+.oauth-row { display: flex; gap: 12px; }
 .oauth-btn {
-  flex: 1;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: rgba(255, 255, 255, .04);
-  border: 1px solid rgba(255, 255, 255, .12);
-  border-radius: 10px;
-  color: #cbd5e1;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all .2s;
+  flex: 1; height: 40px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: rgba(255,255,255,.5);
+  border: 1px solid rgba(255,255,255,.7);
+  border-radius: 10px; color: #475569; font-size: 13px;
+  cursor: pointer; transition: all .2s;
 }
+.oauth-btn:hover { background: rgba(255,255,255,.8); border-color: rgba(99,102,241,.3); }
 
-.oauth-btn:hover {
-  background: rgba(255, 255, 255, .08);
-  border-color: rgba(255, 255, 255, .22);
-}
+.form-footer { display: flex; align-items: center; justify-content: center; gap: 4px; margin-top: 20px; }
+.form-footer span { color: #64748b; font-size: 13px; }
 
-.card-foot {
-  text-align: center;
-  margin: 24px 0 0;
-  font-size: 13px;
-  color: #64748b;
-}
+.pointer { cursor: pointer; }
 
-.pointer {
-  cursor: pointer;
-}
-
-/* ===== 响应式 ===== */
 @media (max-width: 1024px) {
-  .ai-login {
-    flex-direction: column;
-  }
-
-  .hero {
-    flex: none;
-    padding: 48px 32px 24px;
-  }
-
-  .hero-title {
-    font-size: 32px;
-  }
-
-  .chat-preview {
-    display: none;
-  }
-
-  .login-side {
-    padding: 24px 24px 48px;
-  }
-
-  .glass-card {
-    max-width: 440px;
-  }
+  .ai-login { flex-direction: column; }
+  .hero { flex: none; padding: 48px 32px 24px; }
+  .hero-title { font-size: 32px; }
+  .chat-preview { display: none; }
+  .login-side { padding: 24px 24px 48px; }
+  .glass-card { max-width: 440px; }
 }
 </style>

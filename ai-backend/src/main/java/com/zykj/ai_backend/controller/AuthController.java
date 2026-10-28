@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.zykj.ai_backend.common.Result;
 import com.zykj.ai_backend.entity.User;
 import com.zykj.ai_backend.mapper.UserMapper;
+import com.zykj.ai_backend.util.JwtUtil;
 
 import jakarta.annotation.Resource;
 
@@ -16,9 +18,11 @@ import jakarta.annotation.Resource;
 public class AuthController {
     @Resource
     public UserMapper userMapper;
+    @Resource
+    public JwtUtil jwtUtil;
 
     @RequestMapping("/login")
-    public String login(@RequestBody Map<String, String> map) {
+    public Result<String> login(@RequestBody Map<String, String> map) {
         String username = map.get("username");
         String password = map.get("password");
         System.out.println("username:" + username + " password:" + password);
@@ -26,13 +30,14 @@ public class AuthController {
                 .eq("username", username)
                 .eq("password", password));
         if (user != null) {
-            return "success";
+            String token = jwtUtil.generateToken(String.valueOf(user.getId()));
+            return Result.ok(200, "登录成功", token);
         }
-        return "fail";
+        return Result.fail(400, "用户名或密码错误");
     }
 
     @RequestMapping("/register")
-    public String register(@RequestBody Map<String, String> map) {
+    public Result<String> register(@RequestBody Map<String, String> map) {
         String username = map.get("username");
         String password = map.get("password");
         String nickname = map.get("nickname");
@@ -40,7 +45,7 @@ public class AuthController {
         User user = userMapper.selectOne(new QueryWrapper<User>()
                 .eq("username", username));
         if (user != null) {
-            return "该用户名已存在";
+            return Result.fail(400, "该用户名已存在");
         }
         // 创建用户
         user = new User();
@@ -50,8 +55,8 @@ public class AuthController {
         user.setDeleted(0);
         int n = userMapper.insert(user);
         if (n > 0) {
-            return "注册成功！";
+            return Result.ok(200, "注册成功！", null);
         }
-        return "fail";
+        return Result.fail(400, "注册失败");
     }
 }

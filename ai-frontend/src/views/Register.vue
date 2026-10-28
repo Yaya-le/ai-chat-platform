@@ -175,40 +175,47 @@ const goLogin = () => {
 </script>
 
 <style scoped>
-/* 直接复用你 Login.vue 的样式，两份保持一致 */
+/* 与 Chat.vue / Login.vue 一致的浅蓝渐变 + 白色毛玻璃 */
 .login-container {
   min-height: 100vh;
   display: flex;
-  background: #0f0f1a;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #a8c8e8 0%, #b8c8e8 40%, #8ec8e0 100%);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .login-left {
   flex: 1;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
-  overflow: hidden;
+  z-index: 1;
+  padding: 40px;
 }
 
 .brand { text-align: center; z-index: 1; }
 .logo {
   width: 72px; height: 72px; border-radius: 20px;
-  background: rgba(99,102,241,.15);
+  background: linear-gradient(135deg, #6366f1, #06b6d4);
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 24px;
-  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 16px rgba(99,102,241,.3);
+  color: #fff;
 }
-.brand-title { font-size: 32px; font-weight: 700; color: #fff; margin-bottom: 12px; }
-.brand-desc { font-size: 16px; color: rgba(255,255,255,.6); }
+.brand-title { font-size: 32px; font-weight: 700; color: #1e293b; margin-bottom: 12px; }
+.brand-desc { font-size: 16px; color: #475569; }
 
 .decoration { position: absolute; inset: 0; pointer-events: none; }
 .float-item {
   position: absolute; width: 56px; height: 56px; border-radius: 16px;
-  background: rgba(99,102,241,.12); display: flex; align-items: center; justify-content: center;
-  color: rgba(99,102,241,.7); font-size: 24px;
+  background: rgba(255,255,255,.5);
+  border: 1px solid rgba(255,255,255,.6);
+  backdrop-filter: blur(20px);
+  display: flex; align-items: center; justify-content: center;
+  color: #6366f1; font-size: 24px;
 }
 .item-1 { top: 18%; left: 12%; animation: float 6s ease-in-out infinite; }
 .item-2 { bottom: 22%; right: 14%; animation: float 7s ease-in-out infinite .8s; }
@@ -217,15 +224,52 @@ const goLogin = () => {
 
 .login-right {
   width: 480px; display: flex; align-items: center; justify-content: center;
-  background: #fff;
+  padding: 40px;
+  position: relative; z-index: 1;
 }
-.form-wrapper { width: 360px; }
-.form-header { text-align: center; margin-bottom: 36px; }
-.form-header h2 { font-size: 26px; font-weight: 600; color: #1a1a2e; margin-bottom: 8px; }
-.form-header p { color: #909399; font-size: 14px; }
-.login-form :deep(.el-input__wrapper) { border-radius: 12px; padding: 4px 14px; }
-.submit-btn { width: 100%; height: 44px; border-radius: 12px; font-size: 16px; margin-top: 8px; }
-.form-footer { text-align: center; margin-top: 20px; color: #909399; font-size: 14px; }
+.form-wrapper {
+  width: 100%; max-width: 380px;
+  background: rgba(255,255,255,.55);
+  border: 1px solid rgba(255,255,255,.6);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border-radius: 20px;
+  padding: 40px 36px 28px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.08);
+}
+.form-header { text-align: center; margin-bottom: 32px; }
+.form-header h2 { font-size: 24px; font-weight: 600; color: #1e293b; margin-bottom: 8px; }
+.form-header p { color: #64748b; font-size: 13px; }
+
+.login-form :deep(.el-input__wrapper) {
+  background: rgba(255,255,255,.6);
+  border: 1px solid rgba(255,255,255,.7);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.04);
+  padding: 6px 14px;
+  transition: all .2s;
+}
+.login-form :deep(.el-input__wrapper:hover) { border-color: rgba(99,102,241,.4); }
+.login-form :deep(.el-input__wrapper.is-focus) {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99,102,241,.15);
+  background: rgba(255,255,255,.8);
+}
+.login-form :deep(.el-input__inner) { color: #1e293b; }
+.login-form :deep(.el-input__inner::placeholder) { color: #94a3b8; }
+.login-form :deep(.el-input__prefix-inner .el-icon) { color: #64748b; }
+
+.submit-btn {
+  width: 100%; height: 46px;
+  border-radius: 12px; font-size: 15px; font-weight: 600; letter-spacing: 1px;
+  background: linear-gradient(135deg, #6366f1, #06b6d4);
+  border: none;
+  box-shadow: 0 4px 16px rgba(99,102,241,.3);
+  margin-top: 8px;
+}
+.submit-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(99,102,241,.45); }
+
+.form-footer { text-align: center; margin-top: 20px; color: #64748b; font-size: 13px; }
 
 @media (max-width: 900px) {
   .login-left { display: none; }

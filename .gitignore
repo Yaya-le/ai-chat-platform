@@ -1,4 +1,66 @@
-﻿
-# 运行日志
-ai-backend/run.log
+# ==================== 系统文件 ====================
+.DS_Store
+Thumbs.db
+desktop.ini
 
+# ==================== IDE编辑器 ====================
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+nbproject/
+
+# ==================== Java后端 ai-backend ====================
+ai-backend/target/
+ai-backend/.mvn/
+ai-backend/mvnw
+ai-backend/mvnw.cmd
+*.jar
+*.war
+*.ear
+*.class
+*.log
+
+# ==================== Vue前端 ai-frontend ====================
+ai-frontend/node_modules/
+ai-frontend/dist/
+ai-frontend/.vite/
+ai-frontend/*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ==================== Python AI引擎 ai-engine ====================
+ai-engine/__pycache__/
+ai-engine/__pycache__/*
+ai-engine/.venv/
+ai-engine/venv/
+ai-engine/env/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# ==================== 敏感配置文件（重要！不能上传） ====================
+# API密钥、数据库密码等敏感信息
+ai-engine/.env
+ai-engine/.env.local
+ai-engine/.env.*.local
+ai-backend/application-local.yml
+ai-backend/application-prod.yml
+
+# ==================== 日志和临时文件 ====================
+logs/
+*.log
+*.tmp
+*.temp
+cache/
